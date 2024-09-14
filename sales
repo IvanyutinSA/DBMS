@@ -1,0 +1,473 @@
+select * from roles
+#
+;
+select version;
+select version();
+select current_date()
+;
+select current_date;
+select 2 + 2
+;
+\h
+create database shits;
+CREATE DATABASE shits;
+drop shits;
+drop database shits;
+\h
+учше
+exit
+;
+\e
+\e
+select version();
+\e
+select version();
+\e
+select version();
+select date_time;
+\e
+from table select *
+;
+\c
+\c
+\dt
+\e
+create table categories (
+    cat_ID integer not null,
+    cat_name text not null,
+    cat_overcat integer,
+    constraint categories_PK primary key (cat_ID)
+);
+
+create table manufacturers (
+    man_ID integer not null,
+    man_name text not null,
+    man_address text not null,
+    constraint manufactures_PK primary key (man_ID)
+);
+
+create table products (
+    prod_ID integer not null,
+    prod_name text not null,
+    prod_price numeric(8, 2) not null,
+    prod_rest integer not null,
+    prod_cat_ID integer not null,
+    prod_man_ID integer not null,
+    constraint products_PK primary key (prod_ID)
+);
+
+create table customers (
+    cust_ID integer not null,
+    cust_name text not null,
+    cust_address tet not null,
+    cust_discount integer not null,
+    constraint customers_PK primary key (cust_ID)
+);
+
+create table employees (
+    emp_ID integer not null,
+    emp_name text not null,
+    emp_position textg not null,
+    constraint employees_PK primary key (emp_ID)
+);
+
+create table orders (
+    ord_ID integer not null,
+    ord_cust_ID integer not null,
+    ord_emp_ID integer not null,
+    ord_date date not null,
+    constraint orders_PK primary key (ord_ID)
+)
+
+create table items (
+    item_ID integer not null,
+    item_ord_ID integer not null,
+    item_prod_ID integer not null,
+    item_prod_count integer not null,
+    constraint items_PK primary key (item_ID)
+);
+\e
+create table orders (
+    ord_ID integer not null,
+    ord_cust_ID integer not null,
+    ord_emp_ID integer not null,
+    ord_date date not null,
+    constraint orders_PK primary key (ord_ID)
+)
+
+create table items (
+    item_ID integer not null,
+    item_ord_ID integer not null,
+    item_prod_ID integer not null,
+    item_prod_count integer not null,
+    constraint items_PK primary key (item_ID)
+);
+\e
+\q
+show hba_file;
+\q
+\e
+create table categories (
+    cat_ID integer not null,
+    cat_name text not null,
+    constraint categories_PK primary key (cat_ID)
+);
+\dt
+\dt
+\e
+create table manufacturers (
+    man_ID integer not null,
+    man_name text not null,
+    man_address text not null,
+    constraint manufacturers_PK primary key (man_ID)
+);
+
+create table products (
+    prod_ID integer not null,
+    prod_name text not null,
+    prod_price numeric(8, 2) not null,
+    prod_rest integer not null,
+    prod_cat_ID integer not null,
+    prod_man_ID integer not null,
+    constraint products_PK primary key (prod_ID)
+);
+
+create table customers (
+    cust_ID integer not null,
+    cust_name text not null,
+    cust_address text not null,
+    cust_discount integer not null,
+    constraint customers_pk primary key (cust_ID)
+);
+
+create table employees (
+    emp_ID integer not null,
+    emp_name text not null,
+    emp_position text not null,
+    constraint employees_PK primary key (emp_ID)
+);
+
+create table orders (
+    ord_ID integer not null,
+    ord_cust_ID integer not null,
+    ord_emp_ID integer not null,
+    ord_date date not null,
+    constraint orders_PK primary key (ord_ID)
+);
+
+create table items (
+    item_ID integer not null,
+    item_ord_ID integer not null,
+    item_prod_ID integer not null,
+    item_prod_count integer not null,
+    constraint items_PK primary key (item_ID)
+);
+\dt
+\e
+alter table categories
+add constraint categories_FK foreign key (cat_overcat)
+references categories (cat_ID)
+on delete cascade
+on update cascade;
+
+alter table products
+add constraint products_FK1 foreign key (prod_cat_ID)
+references categories (cat_ID)
+on delete cascade
+on update cascade;
+
+alter table products
+add constraint products_FK2 foreign key (prod_man_ID)
+references manufacturers (man_ID)
+on delete cascade
+on update cascade;
+
+alter table orders
+add constraint orders_FK1 foreign key (ord_cust_ID)
+references customers (cust_ID)
+on delete cascade
+on update cascade;
+
+alter table orders
+add constraint orders_FK2 foreign key (ord_emp_ID)
+references employees (emp_ID)
+on delete cascade
+on update cascade;
+
+alter table items
+add constraint items_FK1 foreign key (item_ord_ID)
+references orders (ord_ID)
+on delete cascade
+on update cascade;
+
+alter table items
+add constraint items_FK2 foreign key (item_prod_ID)
+references products (prod_ID)
+on delete cascade
+on update cascade;
+\dt
+\dn
+\dt
+\h
+\h
+\h
+\h
+\?
+\?
+d
+;
+\d
+\d categories
+\dt
+\d parking_spaces
+\d contracts
+\e
+insert into categories (cat_ID, cat_name, cat_overcat)
+ values (1, 'Сверлильные инструменты', NULL),
+        (2, 'Пильно-отрезные инструменты', NULL),
+        (3, 'Инструменты для обработки поверхностей', NULL),
+        (4, 'Перфораторы', 1),
+        (5, 'Дрели', 1),
+        (6, 'Шуруповерты', 1),
+        (7, 'Дисковые пилы', 2),
+        (8, 'Цепные пилы', 2),
+        (9, 'Лобзики электрические', 2),
+        (10, 'Полировальные машины', 3),
+        (11, 'Электрорубанки', 3),
+;
+\e
+insert into categories (cat_ID, cat_name, cat_overcat)
+ values (1, 'Сверлильные инструменты', NULL),
+        (2, 'Пильно-отрезные инструменты', NULL),
+        (3, 'Инструменты для обработки поверхностей', NULL),
+        (4, 'Перфораторы', 1),
+        (5, 'Дрели', 1),
+        (6, 'Шуруповерты', 1),
+        (7, 'Дисковые пилы', 2),
+        (8, 'Цепные пилы', 2),
+        (9, 'Лобзики электрические', 2),
+        (10, 'Полировальные машины', 3),
+        (11, 'Электрорубанки', 3)
+;
+\d categories
+alter table categories
+add cat_overcat integer;
+\e
+insert into categories (cat_ID, cat_name, cat_overcat)
+ values (1, 'Сверлильные инструменты', NULL),
+        (2, 'Пильно-отрезные инструменты', NULL),
+        (3, 'Инструменты для обработки поверхностей', NULL),
+        (4, 'Перфораторы', 1),
+        (5, 'Дрели', 1),
+        (6, 'Шуруповерты', 1),
+        (7, 'Дисковые пилы', 2),
+        (8, 'Цепные пилы', 2),
+        (9, 'Лобзики электрические', 2),
+        (10, 'Полировальные машины', 3),
+        (11, 'Электрорубанки', 3);
+select * from categories
+;
+\e
+insert into categories (cat_ID, cat_name, cat_overcat)
+values (12, 'Измерительные инструменты', 13);
+delete from categories where cat_overcat=13
+;
+alter table categories
+add constraint categories_FK foreign key (cat_overcat)
+references categories (cat_ID)
+on delete cascade
+on update cascade;
+insert into categories (cat_ID, cat_name, cat_overcat)
+values (12, 'Измерительные инструменты', 13);
+\e
+insert into manufacturers (man_ID, man_name, man_address)
+    values (1, 'Мастер', 'Россия'),
+           (2, 'Техника', 'Россия'),
+           (3, 'Deco', 'Китай'),
+           (4, 'Work', 'Китай'),
+           (5, 'Kraut', 'Германия'),
+           (6, 'Yamamoto', 'Япония');
+select * from manufacturers
+;
+\e
+insert into products
+    (prod_ID, prod_name, prod_price, prod_rest, prod_cat_ID, prod_man_ID)
+    values (1, 'Перфоратор Basic-500', 2250, 150, 4, 6),
+           (2, 'Перфоратор Power-800', 3299, 85, 4, 5),
+           (3, 'Перфоратор POWER-500', 2500, 180, 4, 5),
+           (4, 'Перфоратор Удар-650', 1500, 200, 4, 1),
+           (5, 'Перфоратор Deco-2000', 3000, 60, 4, 3),
+           (6, 'Дрель Deco-850', 2000, 160, 5, 3),
+           (7, 'Дрель Спец-700', 1800, 300, 5, 2),
+           (8, 'Шуруповерт Ветерок', 1950, 250, 6, 2),
+           (9, 'Шуруповерт Deco', 3599, 175, 6, 3),
+           (10, 'Пила дисковая Deco', 1550, 80, 7, 3),
+           (11, 'Пила дисковая Power', 2999, 100, 7, 5),
+           (12, 'Пила дисковая Kaput', 3999, 82, 7, 5),
+           (13, 'Пила цепная Deco', 1550, 175, 8, 3),
+           (14, 'Пила цепная Work', 4999, 50, 8, 4),
+           (15, 'Лобзик Basic', 1100, 250, 9, 6),
+           (16, 'Лобзик Deco', 1499, 250, 9, 3),
+           (17, 'Полировальная машина Deco-1000', 1950, 60, 10, 3),
+           (18, 'Полировальная машина Power-1200', 3000, 60, 10, 5),
+           (19, 'Электрорубанок Мастер-800', 3100, 250, 11, 1),
+           (20, 'Электрорубанок Deco-1000', 3700, 150, 11, 3);
+select * from products
+;
+select * from products
+;
+\e
+insert into customers (cust_ID, cust_name, cust_address, cust_discount)
+    values (1, 'Сергеев Владимир Николаевич', 'Москва', 5),
+           (2, 'Волков Иван Владимирович', 'Красноярск', 0),
+           (3, 'Иванова Ольга Сергеевна', 'Москва', 0),
+           (4, 'Васильев Александр Иванович', 'Екатеринбург', 5),
+           (5, 'Тромб Павел Гаврилович', 'Тула', 0),
+           (6, 'Кирьянова Людмила Петровна', 'Сочи', 0),
+           (7, 'Антипов Алексей Владимирович', 'Москва', 10),
+           (8, 'Июньский Виктор Карлович', 'Санкт-Петербург', 5),
+           (9, 'Простой Андрей Андреевич', 'Омск', 0),
+           (10, 'Мотыль Ирина Александровна', 'Санкт-Петербург', 0);
+select * from customers
+;
+\e
+insert into employees (emp_ID, emp_name, emp_position)
+    values (1, 'Ребров Андрей Андреевич', 'менеджер'),
+           (2, 'Котов Владимир Иванович', 'старший менеджер'),
+           (3, 'Колосова Елена Сергеевна', 'менеджер'),
+           (4, 'Батова Алина Дмитриевна', 'старший менеджер');
+select * from employees
+;
+\e
+insert into orders (ord_ID, ord_cust_ID, ord_emp_ID, ord_date)
+    values (1, 1, 1 '15-01-2023'),
+           (2, 6, 1 '17-01-2023'),
+           (3, 5, 4 '17-01-2023'),
+           (4, 9, 3 '23-01-2023'),
+           (5, 6, 1 '02-02-2023'),
+           (6, 5, 4 '10-02-2023'),
+           (7, 3, 2 '23-02-2023'),
+           (8, 5, 4 '23-02-2023'),
+           (9, 10, 2 '23-02-2023'),
+           (10, 2, 1 '04-03-2023'),
+           (11, 4, 4 '04-03-2023'),
+           (12, 7, 2 '16-03-2023'),
+           (13, 1, 3 '24-03-2023'),
+           (14, 8, 3 '25-03-2023'),
+           (15, 5, 2 '26-03-2023');
+\e
+insert into orders (ord_ID, ord_cust_ID, ord_emp_ID, ord_date)
+    values (1, 1, 1, '15-01-2023'),
+           (2, 6, 1, '17-01-2023'),
+           (3, 5, 4, '17-01-2023'),
+           (4, 9, 3, '23-01-2023'),
+           (5, 6, 1, '02-02-2023'),
+           (6, 5, 4, '10-02-2023'),
+           (7, 3, 2, '23-02-2023'),
+           (8, 5, 4, '23-02-2023'),
+           (9, 10, 2, '23-02-2023'),
+           (10, 2, 1, '04-03-2023'),
+           (11, 4, 4, '04-03-2023'),
+           (12, 7, 2, '16-03-2023'),
+           (13, 1, 3, '24-03-2023'),
+           (14, 8, 3, '25-03-2023'),
+           (15, 5, 2, '26-03-2023');
+\e
+;
+]e
+\e
+insert into orders (ord_ID, ord_cust_ID, ord_emp_ID, ord_date)
+    values 
+           (2, 6, 1, '01-17-2023'),
+           (3, 5, 4, '01-17-2023'),
+           (4, 9, 3, '01-23-2023'),
+           (5, 6, 1, '02-02-2023'),
+           (6, 5, 4, '02-10-2023'),
+           (7, 3, 2, '02-23-2023'),
+           (8, 5, 4, '02-23-2023'),
+           (9, 10, 2, '02-23-2023'),
+           (10, 2, 1, '03-04-2023'),
+           (11, 4, 4, '03-04-2023'),
+           (12, 7, 2, '03-16-2023'),
+           (13, 1, 3, '03-24-2023'),
+           (14, 8, 3, '03-25-2023'),
+           (15, 5, 2, '03-26-2023');
+select * from orders
+;
+\e
+insert into items (item_ID, item_ord_ID, item_prod_ID, item_prod_count)
+    values (1, 1, 2, 4),
+           (2, 1, 5, 4),
+           (3, 2, 5, 1),
+           (4, 2, 6, 1),
+           (5, 3, 10, 1),
+           (6, 4, 12, 1),
+           (7, 5, 19, 6),
+           (8, 6, 16, 5),
+           (9, 7, 1, 1),
+           (10, 8, 20, 1),
+           (11, 9, 15, 1),
+           (12, 10, 11, 1),
+           (13, 10, 14, 1),
+           (14, 11, 18, 1),
+           (15, 12, 18, 1),
+           (16, 13, 7, 5),
+           (17, 14, 4, 1),
+           (18, 14, 6, 1),
+           (19, 14, 8, 1),
+           (20, 14, 19, 1),
+           (21, 15, 18, 3),
+;
+insert into items (item_ID, item_ord_ID, item_prod_ID, item_prod_count)
+    values (1, 1, 2, 4),
+           (2, 1, 5, 4),
+           (3, 2, 5, 1),
+           (4, 2, 6, 1),
+           (5, 3, 10, 1),
+           (6, 4, 12, 1),
+           (7, 5, 19, 6),
+           (8, 6, 16, 5),
+           (9, 7, 1, 1),
+           (10, 8, 20, 1),
+           (11, 9, 15, 1),
+           (12, 10, 11, 1),
+           (13, 10, 14, 1),
+           (14, 11, 18, 1),
+           (15, 12, 18, 1),
+           (16, 13, 7, 5),
+           (17, 14, 4, 1),
+           (18, 14, 6, 1),
+           (19, 14, 8, 1),
+           (20, 14, 19, 1),
+           (21, 15, 18, 3);
+select * from orders
+;
+insert into order (ord_ID, ord_cust_ID, ord_emp_ID, ord_date)
+values (1, 1, 1, '01-15-2023')
+;
+insert into orders (ord_ID, ord_cust_ID, ord_emp_ID, ord_date)
+values (1, 1, 1, '01-15-2023')
+;
+insert into items (item_ID, item_ord_ID, item_prod_ID, item_prod_count)
+    values (1, 1, 2, 4),
+           (2, 1, 5, 4),
+           (3, 2, 5, 1),
+           (4, 2, 6, 1),
+           (5, 3, 10, 1),
+           (6, 4, 12, 1),
+           (7, 5, 19, 6),
+           (8, 6, 16, 5),
+           (9, 7, 1, 1),
+           (10, 8, 20, 1),
+           (11, 9, 15, 1),
+           (12, 10, 11, 1),
+           (13, 10, 14, 1),
+           (14, 11, 18, 1),
+           (15, 12, 18, 1),
+           (16, 13, 7, 5),
+           (17, 14, 4, 1),
+           (18, 14, 6, 1),
+           (19, 14, 8, 1),
+           (20, 14, 19, 1),
+           (21, 15, 18, 3);
+\s sales
