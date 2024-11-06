@@ -471,3 +471,305 @@ insert into items (item_ID, item_ord_ID, item_prod_ID, item_prod_count)
            (20, 14, 19, 1),
            (21, 15, 18, 3);
 \s sales
+\c sales
+\e
+create table schedules (
+    sched_ID integer not null,
+    sched_emp_ID integer not null,
+    schedule integer[],
+    constraint schedules_pk primary key (sched_ID)
+);
+
+alter table schedules
+add constraint schedules_FK foreign key (sched_emp_ID)
+references employees (emp_ID)
+on delete cascade
+on update cascade;
+
+insert into schedules values
+    (1, 1, '{ 1, 3, 5, 6, 7 }'::integer[]),
+    (2, 2, '{ 1, 2, 5, 7 }'::integer[]),
+    (3, 3, '{ 2, 5 }'::integer[]),
+    (4, 4, '{ 3, 5, 6 }'::integer[]);
+select * from sales
+;
+select * from schedules
+;
+select from schedules.sched_ID, employees.emp.name, schedules.schedule
+from schedules join employees
+on schedules.sched_emp_ID = employees.emp_ID;
+\e
+select from schedules.sched_ID, employees.emp.name, schedules.schedule
+from schedules join employees
+on schedules.sched_emp_ID = employees.emp_ID;
+\e
+select schedules.sched_ID, employees.emp.name, schedules.schedule
+from schedules join employees
+on schedules.sched_emp_ID = employees.emp_ID;
+\e
+select schedules.sched_ID, employees.emp_name, schedules.schedule
+from schedules join employees
+on schedules.sched_emp_ID = employees.emp_ID;
+\e
+update schedules
+set schedule = schedule || 7
+where sched_ID = 4;
+
+update schedules
+set schedule = array_append(schedule, 6)
+where sched_ID = 3;
+
+update schedules
+set schedule = array_prepend(1, schedule)
+where sched_ID = 3;
+
+update schedules
+set schedule = array_remove(schedule, 5)
+where sched_ID = 1;
+\e
+update schedules
+set schedule[1] = 2, schedule[2] = 3
+where sched_ID = 2;
+\e
+select * from schedules;
+select * from schedules
+where array_position(schedule, 3) is not null;
+select * from schedule
+where schedule @> '{1, 7}'::integer[];
+\e
+select * from schedules
+where schedule @> '{1, 7}'::integer[];
+select * from schedules
+where schedule && array[2, 5];
+select * from schedules
+where not (schedule && array[2, 5]);
+select unnest(schedule) as day
+from schedules
+where sched_emp_ID = 1;
+\e
+create table hobbies (
+    hobb_emp_ID integer not null,
+    hobbies jsonb,
+    constraint hobbies_PK primary key (hobb_emp_ID)
+);
+
+alter table hobbies
+add constraint hobbies_FK foreign key (hobb_emp_ID)
+references employees (emp_ID)
+on delete cascade
+on update cascade;
+e
+\e
+insert into hobbies values
+    (1, '{"sports": ["волейбол", "плавание"],
+          "home_lib": true, "trips": 3
+        }'::jsonb),
+    (2, '{"sports": ["теннис", "плавание"],
+          "home_lib": true, "trips": 2
+        }'::jsonb),
+    (3, '{"sports": ["плавание"],
+          "home_lib": false, "trips": 4
+        }'::jsonb),
+    (4, '{"sports": ["волейбол", "плавание", "теннис"],
+          "home_lib": true, "trips": 0
+        }'::jsonb);
+select * from hobbies;
+select * from hobbies;
+select * from hobbies
+where hobbies @> '{"sports": ["волейбол"]}'::jsonb;
+\e
+selct hobb_emp_ID, hobbies -> 'sports' as sports
+from hobbies
+where sports @> '[ "волейбол" ]'::jsonb;
+\e
+select hobb_emp_ID, hobbies -> 'sports' as sports
+from hobbies
+where sports @> '[ "волейбол" ]'::jsonb;
+\e
+select hobb_emp_ID, hobbies -> 'sports' as sports
+from hobbies
+where hobbies -> 'sports'  @> '[ "волейбол" ]'::jsonb;
+\e
+select count(*)
+from hobbies
+where hobbies ? 'sport';
+\e
+select count(*)
+from hobbies
+where hobbies ? 'sports';
+select * from hobbies
+where hobb_emp_ID = 4;
+update hobbies
+set hobbies = hobbies || '{"sports": ["шахматы"]}'
+where hobb_emp_ID = 4;
+select * from hobbies
+where hobb_emp_ID = 4;
+update hobbies
+set hobbies = jsonb_set(hobbies, '{ sports, 1 }', '"плавание"')
+where hobb_emp_ID = 4;
+select * from hobbies
+where hobb_emp_ID = 4;
+\c parking
+\dt
+\d cars
+\e
+alter table cars
+rename column car_id to car_number
+;
+\d cars
+alter table passages
+rename column car_id to car_number
+;
+\d passages
+\h
+select count(passage_date), max(passage_date), min(passage_date) from passages
+where passage_date between '09-01-2024' and '09-30-2024'
+limit 3;
+\d
+\d clients
+\dt clients
+\dt passages
+\d clients
+\d passages
+select car_name from cars
+where car_number = (select car_number from passages
+                    where passage_date between '09-01-2024' and '09-30-2024');
+select car_name from cars
+where car_number = (select car_number from passages
+                    where passage_date between '09-01-2024' and '09-30-2024');
+select car_name from cars
+where car_number = any(select car_number from passages
+                    where passage_date between '09-01-2024' and '09-30-2024');
+\dt tariffs
+\d tariffs
+select * from tariffs
+;
+select tariff_id, tarrif_price,
+        case when tarrif_price <= 500 then 'Okey'
+             when tarrif_price <= 750 then 'Expencive, but okey'
+             else 'Scam'
+        end as Category
+from tariffs;
+select tariff_id, tarrif_price,
+        case when tarrif_price <= 500 then 'Okey'
+             when tarrif_price <= 750 then 'Expencive, but okey'
+             else 'Scam'
+        end as Category
+from tariffs;
+
+select tariff_id, tariff_price,
+        case when tariff_price <= 500 then 'Okey'
+             when tariff_price <= 750 then 'Expencive, but okey'
+             else 'Scam'
+        end as Category
+from tariffs;
+\d contracts
+select * from contracts
+order by tariff_id;
+\d
+\dt
+\d casr
+\d cars
+select * from payments
+;
+\d clients
+\dt
+select * from payments
+;
+insert into payments (contract_id, payment_id, payment_amount, payment_date)
+values (1, 1, 12000, '10-01-2024');
+insert into payments (contract_id, payment_id, payment_amount, payment_date)
+values (1, 11, 12000, '10-01-2024');
+\d payments
+alter table payments
+drop primary key;
+alter table payments
+drop PRIMARY KEY;
+alter table payments
+drop payments_pk;
+\e
+alter table payments
+drop primary key;
+\e
+alter table payments
+drop constraint payments_pk;
+\d payments
+alter table payments
+add constraint payments_pk primary key payment_id;
+alter table payments
+add constraint payments_pk primary key (payment_id);
+\d payments
+insert into payments (contract_id, payment_id, payment_amount, payment_date)
+values (1, 11, 12000, '10-01-2024');
+select contract_id, sum(payment_amount) as 'total_payment_amount'
+from payments
+group by contract_id
+order by contract_id;
+select contract_id, sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by contract_id;
+select contract_id, sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by contract_id;
+select client_name, contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments
+where clients.client_id = contracts.client_id
+group by contract_id
+order by contract_id;
+select client_name, contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments
+where clients.client_id = contracts.client_id
+group by contract_id
+order by contract_id;
+select client_name, contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments, contracts
+where clients.client_id = contracts.client_id
+group by contract_id
+order by contract_id;
+select client_name, contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments, contracts
+where clients.client_id = contracts.client_id
+group by contract_id
+order by contract_id;
+
+select client_name, payments.contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments, contracts
+where clients.client_id = contracts.client_id
+group by payments.contract_id
+order by payments.contract_id;
+
+select client_name, payments.contract_id, sum(payment_amount) as "total_payment_amount"
+from clients, payments, contracts
+where clients.client_id = contracts.client_id
+group by payments.contract_id
+order by payments.contract_id;
+\d payments
+
+select contract_id, min(payment_date) as "first payment date",sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by "total_payment_amount"
+order by contract_id;
+
+select contract_id, min(payment_date) as "first payment date",sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by "total_payment_amount", contract_id;
+
+select contract_id, min(payment_date) as "first payment date",sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by "total_payment_amount" asc, contract_id asc;
+
+select contract_id, min(payment_date) as "first payment date",sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by contract_id, "total_payment_amount";
+
+select contract_id, min(payment_date) as "first payment date",sum(payment_amount) as "total_payment_amount"
+from payments
+group by contract_id
+order by "first payment date", "total_payment_amount";
+\s sales
